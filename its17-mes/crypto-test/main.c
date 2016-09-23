@@ -4,7 +4,7 @@
 #include "crypto/twofish.h"
 #include "hashes/sha256.h"
 
-static uint8_t twofish_key_01[] = {
+static uint8_t twofish_key[] = {
     0x0, 0x1, 0x2, 0x3, 0x4, 0x5, 0x6, 0x7,
     0x8, 0x9, 0xA, 0xB, 0xC, 0xD, 0xE, 0xF
 };
@@ -14,8 +14,8 @@ static uint8_t aes_key[] = {
     0xab, 0xf7, 0x15, 0x88, 0x09, 0xcf, 0x4f, 0x3c
 };
 
-void twofish(void);
-void aes_cbc(void);
+void twofish_demo(void);
+void aes_cbc_demo(void);
 void sha256_demo(void);
 void print_bytes(char *msg, uint8_t *bytes, int n);
 void read_line_without_trailing_new_line(char *buf, int n);
@@ -26,14 +26,14 @@ int main(void){
     printf("You are running RIOT on a(n) %s board.\n", RIOT_BOARD);
     printf("This board features a(n) %s MCU.\n", RIOT_MCU);
 
-    twofish();
-    aes_cbc();
+    twofish_demo();
+    aes_cbc_demo();
     sha256_demo();
 
     return 0;
 }
 
-void twofish(void) {
+void twofish_demo(void) {
     cipher_context_t ctx_encrypt;
     cipher_context_t ctx_decrypt;
     int err;
@@ -48,14 +48,14 @@ void twofish(void) {
     print_bytes("0x", data, sizeof(data));
 
     // encryption
-    err = twofish_init(&ctx_encrypt, twofish_key_01, TWOFISH_KEY_SIZE);
+    err = twofish_init(&ctx_encrypt, twofish_key, TWOFISH_KEY_SIZE);
     printf("err = %d\n", err);
     err = twofish_encrypt(&ctx_encrypt, data, encrypted);
     printf("err = %d\n", err);
     print_bytes("cipher bytes: 0x", encrypted, sizeof(encrypted));
 
     // decryption
-    err = twofish_init(&ctx_decrypt, twofish_key_01, TWOFISH_KEY_SIZE);
+    err = twofish_init(&ctx_decrypt, twofish_key, TWOFISH_KEY_SIZE);
     printf("err = %d\n", err);
     err = twofish_decrypt(&ctx_decrypt, encrypted, decrypted);
     printf("err = %d\n", err);
@@ -64,7 +64,7 @@ void twofish(void) {
     printf("== TWOFISH FINISHED ===\n");
 }
 
-void aes_cbc(void){
+void aes_cbc_demo(void){
     cipher_t cipher_enc;
     cipher_t cipher_dec;
     int len, err;
