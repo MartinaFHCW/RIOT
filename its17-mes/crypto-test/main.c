@@ -45,7 +45,7 @@ void twofish_demo(void) {
     printf("Enter up to %d chars:\n", sizeof(data) - 1);
     read_line_without_trailing_new_line((char*) data, sizeof(data));
     printf("\"%s\" is in hex: ", (char*) data);
-    print_bytes("0x", data, sizeof(data));
+    print_bytes("0x", data, strlen((char*) data));
 
     // encryption
     err = twofish_init(&ctx_encrypt, twofish_key, TWOFISH_KEY_SIZE);
@@ -79,7 +79,7 @@ void aes_cbc_demo(void){
     printf("Enter up to %d chars:\n", sizeof(data) - 1);
     read_line_without_trailing_new_line((char*) data, sizeof(data));
     printf("\"%s\" is in hex: ", (char*) data);
-    print_bytes("0x", data, sizeof(data));
+    print_bytes("0x", data, strlen((char*) data));
 
     // encryption
     err = cipher_init(&cipher_enc, CIPHER_AES_128, aes_key, sizeof(aes_key));
@@ -107,7 +107,7 @@ void sha256_demo(void){
     printf("Enter up to %d chars:\n", sizeof(data) - 1);
     read_line_without_trailing_new_line(data, sizeof(data));
     printf("\"%s\" is in hex: ", data);
-    print_bytes("0x", (uint8_t*) data, sizeof(data));
+    print_bytes("0x", (uint8_t*) data, strlen((char*) data));
 
     sha256_init(&sha256);
     sha256_update(&sha256, (uint8_t*) data, strlen(data));
