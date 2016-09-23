@@ -2,6 +2,7 @@
 #include "crypto/ciphers.h"
 #include "crypto/modes/cbc.h"
 #include "crypto/twofish.h"
+#include "hashes/sha256.h"
 
 static uint8_t twofish_key_01[] = {
     0x0, 0x1, 0x2, 0x3, 0x4, 0x5, 0x6, 0x7,
@@ -15,6 +16,7 @@ static uint8_t aes_key[] = {
 
 void twofish(void);
 void aes_cbc(void);
+void sha256_demo(void);
 void print_bytes(char *msg, uint8_t *bytes, int n);
 void read_line_without_trailing_new_line(char *buf, int n);
 
@@ -26,6 +28,7 @@ int main(void){
 
     twofish();
     aes_cbc();
+    sha256_demo();
 
     return 0;
 }
@@ -93,6 +96,25 @@ void aes_cbc(void){
     print_bytes("decrypted bytes: 0x", decrypted, len);
     printf("decrypted message: %s\n", decrypted);
     printf("=== AES FINISHED ===\n");
+}
+
+void sha256_demo(void){
+    static unsigned char hash[SHA256_DIGEST_LENGTH];
+    sha256_context_t sha256;
+    char data[64] = {0};
+
+    printf("=== RUNNING SHA256 ===\n");
+    printf("Enter up to %d chars:\n", sizeof(data) - 1);
+    read_line_without_trailing_new_line(data, sizeof(data));
+    printf("\"%s\" is in hex: ", data);
+    print_bytes("0x", (uint8_t*) data, sizeof(data));
+
+    sha256_init(&sha256);
+    sha256_update(&sha256, (uint8_t*) data, strlen(data));
+    sha256_final(&sha256, hash);
+
+    print_bytes("sha256 is: 0x", hash, SHA256_DIGEST_LENGTH);
+    printf("=== SHA256 FINISHED ===\n");
 }
 
 void read_line_without_trailing_new_line(char *buf, int n){
