@@ -26,6 +26,9 @@ int main(void){
     printf("You are running RIOT on a(n) %s board.\n", RIOT_BOARD);
     printf("This board features a(n) %s MCU.\n", RIOT_MCU);
 
+    // all demos read a string from the command line, encrypt the
+    // entered message, decrypt it again, and print the data at various
+    // stages throughout the process
     twofish_demo();
     aes_cbc_demo();
     sha256_demo();
@@ -117,6 +120,8 @@ void sha256_demo(void){
     printf("=== SHA256 FINISHED ===\n");
 }
 
+// as the name states, reads until the first '\n' (inclusive) and
+// replaces it with a '\0'
 void read_line_without_trailing_new_line(char *buf, int n){
     void *check;
 
@@ -133,8 +138,9 @@ void read_line_without_trailing_new_line(char *buf, int n){
     }
 }
 
+// print bytes in hex, with two digits each. adds leading 0s if necessary
+// msg is optional and printed before the hex-string
 void print_bytes(char *msg, uint8_t *bytes, int n){
-
     if ( bytes != NULL && n > -1){
         if ( msg != NULL ){
             printf("%s", msg);
